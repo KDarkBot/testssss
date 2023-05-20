@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Chat</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+    <div id="app">
+    <div class="container mt-5">
+        <div class="login-background">
+        <div id="login-container" class="card p-4">
+            <h2 class="mb-4">로그인</h2>
+            <div class="mb-3">
+                <label for="email-input" class="form-label">이메일</label>
+                <input type="email" id="email-input" class="form-control" placeholder="이메일">
+            </div>
+            <div class="mb-3">
+                <label for="password-input" class="form-label">비밀번호</label>
+                <input type="password" id="password-input" class="form-control" placeholder="비밀번호">
+            </div>
+            <div class="mb-3">
+                <label for="nickname-input" class="form-label">닉네임</label>
+                <input type="text" id="nickname-input" class="form-control" placeholder="닉네임">
+            </div>
+            <button id="login-button" class="btn btn-primary">로그인</button>
+            <button id="signup-button" class="btn btn-secondary">계정 생성</button>
+        </div>
+    </div>
+        <div id="signup-container" class="card p-4" style="display: none;">
+            <h2 class="mb-4">계정 생성</h2>
+            <div class="mb-3">
+                <label for="signup-email-input" class="form-label">이메일</label>
+                <input type="email" id="signup-email-input" class="form-control" placeholder="이메일">
+            </div>
+            <div class="mb-3">
+                <label for="signup-password-input" class="form-label">비밀번호</label>
+                <input type="password" id="signup-password-input" class="form-control" placeholder="비밀번호">
+            </div>
+            <div class="mb-3">
+                <label for="signup-nickname-input" class="form-label">닉네임</label>
+                <input type="text" id="signup-nickname-input" class="form-control" placeholder="닉네임">
+            </div>
+            <button id="create-account-button" class="btn btn-primary">계정 생성</button>
+            <button id="cancel-button" class="btn btn-secondary">취소</button>
+        </div>
+
+        <div id="chat-container" style="display: none;">
+            
+            <div id="message-container" class="card p-4 mt-4 mb-4"></div>
+            <div class="input-group mb-3">
+                <input type="text" id="message-input" class="form-control" placeholder="메시지를 입력하세요" disabled>
+                <button id="send-button" class="btn btn-primary" disabled>보내기</button>
+                <button id="logout-button" class="btn btn-danger">로그아웃</button>
+                <button id="settings-button" class="btn btn-secondary">설정</button>
+            </div>
+        </div>
+
+        <div id="settings-container" class="card p-4" style="display: none;">
+            <h2 class="mb-4">설정</h2>
+            <div class="mb-3">
+                <label for="background-input" class="form-label">배경 이미지 변경</label>
+                <input type="file" id="background-input" class="form-control" accept="image/*">
+            </div>
+            <div class="mb-3">
+                <label for="account-email-input" class="form-label">이메일</label>
+                <input type="email" id="account-email-input" class="form-control" placeholder="이메일" disabled>
+            </div>
+            <div class="mb-3">
+                <label for="account-nickname-input" class="form-label">닉네임</label>
+                <input type="text" id="account-nickname-input" class="form-control" placeholder="닉네임">
+            </div>
+            <button id="save-settings-button" class="btn btn-primary">저장</button>
+            <button id="cancel-settings-button" class="btn btn-secondary">취소</button>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Firebase JavaScript SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-storage.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
