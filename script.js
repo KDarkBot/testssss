@@ -10,33 +10,7 @@ var firebaseConfig = {
 };
 
 
-// Vue 컴포넌트 정의
-Vue.component('login-container', {
-    template: `
-        <div class="card p-4">
-            <h2 class="mb-4">로그인</h2>
-            <div class="mb-3">
-                <label for="email-input" class="form-label">이메일</label>
-                <input type="email" id="email-input" class="form-control" placeholder="이메일">
-            </div>
-            <div class="mb-3">
-                <label for="password-input" class="form-label">비밀번호</label>
-                <input type="password" id="password-input" class="form-control" placeholder="비밀번호">
-            </div>
-            <div class="mb-3">
-                <label for="nickname-input" class="form-label">닉네임</label>
-                <input type="text" id="nickname-input" class="form-control" placeholder="닉네임">
-            </div>
-            <button id="login-button" class="btn btn-primary">로그인</button>
-            <button id="signup-button" class="btn btn-secondary">계정 생성</button>
-        </div>
-    `
-});
 
-// Vue 인스턴스 생성
-new Vue({
-    el: '#app',
-});
 
 
 
