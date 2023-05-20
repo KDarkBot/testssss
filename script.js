@@ -8,14 +8,6 @@ var firebaseConfig = {
   appId: "1:111851594752:web:ab7955b9b052ba907c64e5",
   measurementId: "G-M14RE2SYWG"
 };
-
-
-
-
-
-
-
-
 function displayMessage(message) {
     var messageContainer = document.getElementById("message-container");
     var messageElement = document.createElement("div");
@@ -317,51 +309,7 @@ document.getElementById("message-input").addEventListener("keydown", function(ev
   }
 });
 
-// 알림 권한 요청
-function requestNotificationPermission() {
-  return new Promise(function(resolve, reject) {
-    const messaging = firebase.messaging();
-    messaging.requestPermission()
-      .then(function() {
-        console.log("알림 권한 허용됨");
-        return messaging.getToken();
-      })
-      .then(function(token) {
-        console.log("토큰:", token);
-        resolve(token);
-      })
-      .catch(function(error) {
-        console.error("알림 권한 요청 실패:", error);
-        reject(error);
-      });
-  });
-}
 
-// 서비스 워커 등록
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-    .then(function(registration) {
-      console.log('서비스 워커 등록 성공:', registration);
-      // 알림 권한 요청
-      requestNotificationPermission();
-    })
-    .catch(function(error) {
-      console.error('서비스 워커 등록 실패:', error);
-    });
-}
-
-// 메시지 수신 처리
-firebase.messaging().onMessage(function(payload) {
-  console.log('새로운 메시지 도착:', payload);
-  var notificationTitle = payload.notification.title;
-  var notificationOptions = {
-    body: payload.notification.body,
-    icon: payload.notification.icon
-  };
-
-  // 웹 알림 표시
-  var notification = new Notification(notificationTitle, notificationOptions);
-});
 
 
 
