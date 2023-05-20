@@ -10,18 +10,7 @@ var firebaseConfig = {
 };
 
 
-function requestNotificationPermission() {
-  if (Notification.permission !== "granted") {
-    Notification.requestPermission().then(function (permission) {
-      if (permission === "granted") {
-        console.log("알림 권한이 허용되었습니다.");
-      }
-    });
-  }
-}
 
-// 알림 권한 요청
-requestNotificationPermission();
 
 
 
@@ -345,7 +334,18 @@ document.getElementById("message-input").addEventListener("keydown", function(ev
   }
 });
 
+function requestNotificationPermission() {
+  if (Notification.permission !== "granted") {
+    Notification.requestPermission().then(function (permission) {
+      if (permission === "granted") {
+        console.log("알림 권한이 허용되었습니다.");
+      }
+    });
+  }
+}
 
+// 알림 권한 요청
+requestNotificationPermission();
 
 
 
