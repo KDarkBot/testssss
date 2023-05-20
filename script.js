@@ -16,38 +16,21 @@ var firebaseConfig = {
 
 
 
-
 function displayMessage(message) {
-  var messageContainer = document.getElementById("message-container");
-  var messageElement = document.createElement("div");
+    var messageContainer = document.getElementById("message-container");
+    var messageElement = document.createElement("div");
 
-  // 사용자 닉네임 가져오기
-  firebase
-    .firestore()
-    .collection("users")
-    .doc(message.user)
-    .get()
-    .then(function (userDoc) {
-      var nickname = userDoc.data().nickname;
-      messageElement.innerHTML = `<span class="message-nickname">${nickname}: </span>${message.text}`;
-      messageContainer.appendChild(messageElement);
-      messageContainer.scrollTop = messageContainer.scrollHeight;
-
-      // 새로운 메시지가 도착한 경우에만 알림 보내기
-      if (
-        document.visibilityState !== "visible" && // 페이지가 focus 중이 아닐 때
-        document.hasFocus() && // 윈도우가 focus를 가지고 있을 때
-        Notification.permission === "granted" // 알림 권한이 허용된 상태일 때
-      ) {
-        var notification = new Notification("새로운 메시지 도착", {
-          body: `${nickname}: ${message.text}`,
-         
+    // 사용자 닉네임 가져오기
+    firebase.firestore().collection("users").doc(message.user).get()
+        .then(function(userDoc) {
+            var nickname = userDoc.data().nickname;
+            messageElement.innerHTML = `<span class="message-nickname">${nickname}: </span>${message.text}`;
+            messageContainer.appendChild(messageElement);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        })
+        .catch(function(error) {
+            console.error("사용자 정보 가져오기 실패:", error);
         });
-      }
-    })
-    .catch(function (error) {
-      console.error("사용자 정보 가져오기 실패:", error);
-    });
 }
 
   
@@ -334,18 +317,51 @@ document.getElementById("message-input").addEventListener("keydown", function(ev
   }
 });
 
+// 알림 권한 요청
 function requestNotificationPermission() {
-  if (Notification.permission !== "granted") {
-    Notification.requestPermission().then(function (permission) {
-      if (permission === "granted") {
-        console.log("알림 권한이 허용되었습니다.");
-      }
-    });
-  }
+  return new Promise(function(resolve, reject) {
+    const messaging = firebase.messaging();
+    messaging.requestPermission()
+      .then(function() {
+        console.log("알림 권한 허용됨");
+        return messaging.getToken();
+      })
+      .then(function(token) {
+        console.log("토큰:", token);
+        resolve(token);
+      })
+      .catch(function(error) {
+        console.error("알림 권한 요청 실패:", error);
+        reject(error);
+      });
+  });
 }
 
-// 알림 권한 요청
-requestNotificationPermission();
+// 서비스 워커 등록
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(function(registration) {
+      console.log('서비스 워커 등록 성공:', registration);
+      // 알림 권한 요청
+      requestNotificationPermission();
+    })
+    .catch(function(error) {
+      console.error('서비스 워커 등록 실패:', error);
+    });
+}
+
+// 메시지 수신 처리
+firebase.messaging().onMessage(function(payload) {
+  console.log('새로운 메시지 도착:', payload);
+  var notificationTitle = payload.notification.title;
+  var notificationOptions = {
+    body: payload.notification.body,
+    icon: payload.notification.icon
+  };
+
+  // 웹 알림 표시
+  var notification = new Notification(notificationTitle, notificationOptions);
+});
 
 
 
