@@ -10,6 +10,18 @@ var firebaseConfig = {
 };
 
 
+function requestNotificationPermission() {
+  if (Notification.permission !== "granted") {
+    Notification.requestPermission().then(function (permission) {
+      if (permission === "granted") {
+        console.log("알림 권한이 허용되었습니다.");
+      }
+    });
+  }
+}
+
+// 알림 권한 요청
+requestNotificationPermission();
 
 
 
@@ -17,20 +29,36 @@ var firebaseConfig = {
 
 
 function displayMessage(message) {
-    var messageContainer = document.getElementById("message-container");
-    var messageElement = document.createElement("div");
+  var messageContainer = document.getElementById("message-container");
+  var messageElement = document.createElement("div");
 
-    // 사용자 닉네임 가져오기
-    firebase.firestore().collection("users").doc(message.user).get()
-        .then(function(userDoc) {
-            var nickname = userDoc.data().nickname;
-            messageElement.innerHTML = `<span class="message-nickname">${nickname}: </span>${message.text}`;
-            messageContainer.appendChild(messageElement);
-            messageContainer.scrollTop = messageContainer.scrollHeight;
-        })
-        .catch(function(error) {
-            console.error("사용자 정보 가져오기 실패:", error);
+  // 사용자 닉네임 가져오기
+  firebase
+    .firestore()
+    .collection("users")
+    .doc(message.user)
+    .get()
+    .then(function (userDoc) {
+      var nickname = userDoc.data().nickname;
+      messageElement.innerHTML = `<span class="message-nickname">${nickname}: </span>${message.text}`;
+      messageContainer.appendChild(messageElement);
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+
+      // 새로운 메시지가 도착한 경우에만 알림 보내기
+      if (
+        document.visibilityState !== "visible" && // 페이지가 focus 중이 아닐 때
+        document.hasFocus() && // 윈도우가 focus를 가지고 있을 때
+        Notification.permission === "granted" // 알림 권한이 허용된 상태일 때
+      ) {
+        var notification = new Notification("새로운 메시지 도착", {
+          body: `${nickname}: ${message.text}`,
+         
         });
+      }
+    })
+    .catch(function (error) {
+      console.error("사용자 정보 가져오기 실패:", error);
+    });
 }
 
   

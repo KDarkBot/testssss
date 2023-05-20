@@ -1,47 +1,31 @@
-
-
-body {
+*{
+    margin: 0;
+    padding: 0;
+}
+#message-container{
+    height: 700px;
+    overflow-y: auto;
+}
+body{
+    width: 100%;
+    width: 100%;
+}
+html{
+    width: 100%;
+    width: 100%;
+}
+#app {
+    width: 100%;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-size:cover;
+  }
+  .message-element {
+    font-size: 30px;
+    line-height: 1.5;
+  }
+  body{
     background-repeat: no-repeat;
-}
-
-.container {
-    max-width: 400px;
-}
-
-.card {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.card.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#message-container {
-    height: 300px;
-    overflow-y: scroll;
-    padding: 10px;
-    background-color: #f8f8f8;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-height: 400px;
-}
-
-
-#message-container {
-    height: 400px; /* 원하는 높이로 조정하세요 */
-    overflow-y: auto; 
-}
-
-#login-container{
-    width: 400px;
-    margin-bottom: 100px;
-    box-shadow: 0 0px 200px rgba(216, 9, 9, 0.1);
-}
-
+    background-size: cover;
+  }
