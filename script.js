@@ -286,6 +286,36 @@ document.getElementById("create-account-button").addEventListener("click", funct
 
 
 
+// 메시지 입력란에서 엔터 키를 눌렀을 때 처리
+document.getElementById("message-input").addEventListener("keydown", function(event) {
+  if (event.keyCode === 13) { // 엔터 키 코드: 13
+    event.preventDefault(); // 기본 동작(새 줄 추가) 방지
+
+    // 메시지 전송 로직 실행
+    var messageInput = document.getElementById("message-input");
+    var message = messageInput.value;
+
+    var user = firebase.auth().currentUser;
+    if (user && message.trim() !== "") {
+      firebase
+        .firestore()
+        .collection("messages")
+        .add({
+          text: message,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          user: user.uid,
+        })
+        .then(function () {
+          // 메시지 전송 성공 시 처리할 로직
+          messageInput.value = "";
+        })
+        .catch(function (error) {
+          // 메시지 전송 실패 시 처리할 로직
+          console.error("메시지 전송 실패", error);
+        });
+    }
+  }
+});
 
 
 
